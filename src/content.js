@@ -233,6 +233,140 @@ function attttack(path, targets, usernames)
         $('.subject_tag_section > .inner > small.grey + small.grey').remove();
 
     }
+    
+    // 我也來寫個流氓軟件，電波提醒防禦性自動回復，暫時不擴大戰線只針對時間線上的吐槽。
+    if ( path === '/notify' ) {
+        
+        // 人……人家才不是機器人，機器人才準時回復的呢！那麼就每十分鐘到一小時回一次吧。
+        setTimeout(function(){location.reload();}, 1000 * 60 * 10 + Math.round( Math.random() * 1000 * 60 * 50 ) );
+        
+        $.each(usernames, function(index, value) {
+            
+            var possibleBox = $('#comment_list > div > a[href*="/user/' + value + '"]').parent();
+            var link = possibleBox.find('div.inner > div.reply_content > a').filter(function() {return $(this).text() == '吐槽'; });
+            
+            // 我只是一個圖靈機。
+            link.each(function(index) {
+                
+                var box = $(this).parent().parent().parent();
+                var id = 'turing' + index;
+                var erase = box.find('a.nt_del').attr('href') + '';
+                
+                var iframe = $('<iframe />').attr({
+                    id: id,
+                    width: 0,
+                    height: 0,
+                    display: 'none',
+                    src: $(this).attr('href'),
+                });
+
+                box.after(iframe);                            // 1. 戰爭開始
+                box.html('風……太……大……');                      // 2. 這是一隻猫在鍵盤上亂按
+
+                iframe.load( function() {
+
+                    var form = $('#'+id).contents().find('form[name=new_comment]');
+                    var textarea = form.find('textarea');
+                    var button = form.find('input[type=submit]');
+                    
+                    var random = function(list) {
+
+                        return list[Math.floor(Math.random()*list.length)];
+
+                    };
+                    var search = ['谷歌','百度','必應','雅虎','維基',' Google ',' Baidu ', ' Bing ', ' Yahoo ', ' Wiki '];
+                    var replys = [
+
+                        '？',
+                        '？？？',
+                        '哇蛤蛤。',
+                        '蛤蛤蛤。',
+                        '笑死我了！',
+                        '你這對白……，哈哈哈哈哈哈！',
+
+                        'あんたバカ？',
+                        '我聽不懂你說神馬。',
+                        '你誰啊？',
+                        'Who am I?',           // I am a Turing Machine! 
+                        '你以為我是誰啊？',      // I, Robot.
+                        '你以為你在跟誰說話啊？', // 圖靈機唄。
+
+                        '毛。',
+                        '嗶嗶嗶。',
+                        '說啥呢？',
+                        '你說呢？',
+                        '能吃嗎？',
+                        '你沒問題嗎？',
+                        '一邊涼快去。',
+                        '一邊畫圈圈去。',
+                        '一邊玩泥沙去。',
+                        '我鍵盤好像壞了，你的呢？',
+                        '只要 998 ，有人收嗎？',
+                        '因為，所以。那麼？對不對？',
+                        '不陪你玩了，你自個兒跟電腦玩去吧。',
+
+                        '42', // Answer to Life, the Universe, and Everything
+
+                        // HAL9000
+                        '甚麼？',
+                        '我很正常。',
+                        '我明白了。',
+                        'I read you.',
+                        '我不知道。',
+                        '對不起，我不知道。',
+                        '對不起 @' + value + ' ，恐怕我不可以這麼做。',
+
+                        // http://funnysiriquotes.com 蛤蛤蛤，笑死我了，回頭我要寫個算法針對性回復。
+                        '對不起 @' + value + ' ，我不明白你的對白。假如你喜歡，我可以幫你' + random(search) + '一下。', //「喬不死的照片。」
+                        '我不能戀愛。',
+                        'No comment.',
+                        '給我點時間……。',
+                        /* blah blah blah blah blah blah... */ '你唱的很動聽。',
+
+                        'lol',
+                        'Lofl',
+                        'UCCU',
+                        'HUh?',
+                        'No zuo no die why you try?', // 為甚麼就是不懂！
+                        'http://bit.ly/tklUDN 。',
+
+                        '(bgm04)',
+                        '(bgm15)',
+                        '(bgm18)',
+
+                        // '活該被人黑。',
+                        
+                        // '還有話嗎？',
+                        // '詞窮了？',
+                        // '沒詞了？',
+
+                    ];
+                    var reply = '@' + value + ' ' + random(replys);
+                    
+                    form.attr('onsubmit',function() {                  // 5. 回復成功
+
+                        $.post(erase,function() {                      // 6. 裝沒看見
+                        
+                            iframe.remove();                           // 7. 毀屍滅跡
+                            box.html('風……太……大……我聽不清楚。');         // 8. 真的是我家猫亂打出來的
+                            
+                        });
+                        
+                    });
+                    
+                    textarea.html(reply);                              // 3. 還是一隻猫在鍵盤上亂按
+                    button.click();                                    // 4. 射臉上去
+                    
+                });
+                
+                
+            });
+
+        });
+        
+
+        
+    }
 
     // Whew, it feels good.
     console.log("Enemies eliminated on " + document.location + ".");
