@@ -269,7 +269,7 @@ function attttack(path, targets, usernames)
                 iframe.load( function() {
                     
                     // 機器人還能聽懂你說話，wu la la la la la wu la~ 。
-                    var inputBox = $('li.reply_item > a.cmt_reply + a.l[href*="/user/' + 'laoism' + '"]').last().parent().clone();
+                    var inputBox = $('li.reply_item > a.cmt_reply + a.l[href*="/user/' + user + '"]').last().parent().clone();
                     inputBox.children('span.tip_j').prevAll().remove();
                     inputBox.children('span.tip_j').remove();
                     var input = inputBox.text();
