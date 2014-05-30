@@ -267,11 +267,17 @@ function attttack(path, targets, usernames)
                 box.html('風……太……大……');                               // 2. 這是一隻猫在鍵盤上亂按
 
                 iframe.load( function() {
+                    
+                    // 機器人還能聽懂你說話，wu la la la la la wu la~ 。
+                    var inputBox = $('li.reply_item > a.cmt_reply + a.l[href*="/user/' + 'laoism' + '"]').last().parent().clone();
+                    inputBox.children('span.tip_j').prevAll().remove();
+                    inputBox.children('span.tip_j').remove();
+                    var input = inputBox.text();
 
                     var form = $('#'+id).contents().find('form[name=new_comment]');
                     var textarea = form.find('textarea');
                     var button = form.find('input[type=submit]');
-                    
+
                     form.attr('onsubmit',function() {                  // 5. 回復成功
 
                         $.post(erase,function() {                      // 6. 裝沒看見
@@ -283,7 +289,7 @@ function attttack(path, targets, usernames)
                         
                     });
                     
-                    textarea.html(bB.reply(user));                     // 3. 還是一隻猫在鍵盤上亂按
+                    textarea.html(bB.reply(user,input));               // 3. 還是一隻猫在鍵盤上亂按
                     button.click();                                    // 4. 射臉上去
 
                 });
