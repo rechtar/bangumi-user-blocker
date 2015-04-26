@@ -3,7 +3,7 @@
 
     "name": "Bangumi 用户屏蔽",
     "description": "在 Bangumi 全站内屏蔽指定用户的评论、吐槽、日志和目录。",
-    "version": "0.9.4",
+    "version": "0.9.5",
     "icons": { "128": "i128.png", "16": "i16.png", "32": "i32.png", "48": "i48.png" },
     "permissions": [ "storage", "tabs", "http://chii.in/*", "http://bangumi.tv/*", "http://bgm.tv/*" ],
 
