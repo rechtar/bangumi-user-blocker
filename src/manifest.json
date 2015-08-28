@@ -14,7 +14,7 @@
     "options_page": "options.html",
     "content_scripts": [ {
         "all_frames": true,
-        "js": [ "jquery-1.9.1.min.js", "content.js" ],
+        "js": [ "jquery-1.9.1.min.js", "content.js", "replys.js" ],
         "matches": [ "http://chii.in/*", "http://bangumi.tv/*", "http://bgm.tv/*" ],
         "run_at": "document_start"
     } ],
