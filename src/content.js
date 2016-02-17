@@ -46,14 +46,22 @@ function processPage() {
         // Do nothing to myself.
         if ($('a[href="/settings"]').length) return;
         
+<<<<<<< HEAD
         spanString = $("div.headerAvatar span.avatarSize75")[0].outerHTML;
+=======
+        spanString = $("h1.nameSingle span.avatarSize75")[0].outerHTML;
+>>>>>>> refs/remotes/rechtar/master
         numericalId = spanString.match(/\/(\d+|icon)\.jpg/)[1];
         stringId = path.match(/\/user\/(\w+)$/)[1];
         console.log("The user's numerical id is " + numericalId + ".");
         if (numericalId == "icon") console.log("Oh shit, that's a default icon!");
         console.log("The user's string id is " + stringId + ".");
         
+<<<<<<< HEAD
         buttonBox = $('div.headerContainer > h1.nameSingle > div.rr');
+=======
+        buttonBox = $('h1.nameSingle > div.rr');
+>>>>>>> refs/remotes/rechtar/master
         buttonBox.prepend('<a href="javascript:void(0)" class="chiiBtn" id="blockBtn"><span>屏蔽</span></a>');
         buttonBox.prepend('<a href="javascript:void(0)" class="chiiBtn" id="unblockBtn"><span>解除屏蔽</span></a>');
         
