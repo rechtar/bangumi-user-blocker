@@ -1,6 +1,9 @@
 var bB = bB || {};      // define classes bB (bgm Block)
 
-bB.reply = function (user, input) {
+bB.reply = function (user, input, count) {
+    
+    input = input || '';
+    count = count || 1;
     
     var random = function(list) {
 
@@ -11,9 +14,38 @@ bB.reply = function (user, input) {
         return Math.random();
     };
     var output;
+      
+    // multi
+    if (count >= 2) {
         
+        var object = ['異形軍', '使徒', 'W.O.R.M.', '珊瑚岩', '巨大蟋蟀', '魔女', 'Festum', '王蟲', user];
+        var name = ['有德', '阿囧', 'Saber', 'ミク', '渣嗣', '娜烏西卡', user];
+        var robot = ['初號機', 'Mk-II', 'QB', 'MarkSein', '巨神兵', '神人', user];
+        
+        output = random([
+            
+            '啊，有 ' + count + ' 隻蚊子在耳邊飛過，雷射激光已全方位擊滅對象。',
+            Array(count).join('啪') + '，這裏是公眾場所，真便太！',
+            user + '-' + count + ' 號，磨磨蹭蹭地做甚麼？還不快點到基地報到！', 
+            '唉～第 ' + count + ' 號樣品又暴走了，快拿去給 B 娘切開回收。',
+            '嗯？' + count + ' 克的惡意不夠，快多拿點來我好把 @' + user + ' 鍊成賢者之石。',
+            '龍珠雷達上出現 ' + count + ' 隻' + random(object) + '，' + random(name) + '！左舷彈幕太薄了啊，還不快點把' + random(robot) + '召喚出來去送死！',
+            
+        ]);
+        
+    }
+    
+    // short
+    else if ( chance() < 0.2 && input.length <= 2) {
+        
+        if ( input.match(/我/) ) input = input.replace(/我/g,'你');
+        
+        return '@' + user + ' ' + input + '？';
+            
+    }
+    
     // http://
-    if ( chance() < 0.5 && input.match(/http/) ) {
+    else if ( chance() < 0.5 && input.match(/http/) ) {
 
         output = random([
 
@@ -55,14 +87,14 @@ bB.reply = function (user, input) {
     else if ( chance() < 0.1 && input.match(/(=_,=|ಠ＿ಠ|=◡=|=_=)/) ) {
 
         var bgm = ['03','04','13','15','18','19','20','21','22','84'];
-        output = '(bgm' + random(bgm) +')';
+        output = '(bgm' + random(bgm) +')。';
 
     }
 
     // jackpot
     else if ( chance() < 0.005 ) {
 
-        output = '㳟喜你！你搖中 0.5% 的獎了，請到 http://bangumi.tv/blog/43672#post_33934 查收代碼。機器人是 24/7/365 年終無休的，歡迎繼續調戲。';
+        output = '㳟喜你！你搖中 0.5% 的獎了，然後沒有獎品。';
 
     }
 
@@ -76,6 +108,8 @@ bB.reply = function (user, input) {
             '你以為我是誰？',                     // I, Robot.
             '你以為你在跟誰說話啊？',              // 圖靈機唄。
             '我不是你想像中的「人」。',
+            '風……太……大……我聽不清楚！',
+            '這真的是我家猫亂打出來的。',
             '看着像是兩個機器人對話啊。',
             '你知道嗎？屏蔽插件痕好用！',
             '你有沒有感覺這些對白有些奇怪？',
@@ -136,7 +170,7 @@ bB.reply = function (user, input) {
             'No comment.',
             /* blah blah blah... */ '你唱的很動聽。',
             '對不起 @' + user + ' ，恐怕我不可以這麼做。',
-            'I\' sorry ' + user + ', I\'m afraid I can\'t do that.',
+            'I\'m sorry ' + user + ', I\'m afraid I can\'t do that.',
 
             '呵呵。',                            // 呵呵
             'So?',
@@ -152,6 +186,6 @@ bB.reply = function (user, input) {
 
     };
 
-    return '@' + user + ' ' + output;
+    return '@' + user + ' ' + output; // + ' // 謝謝觀賞人類與圖靈機的對話，有任何想說的話可以在下面回復。';
     
 };

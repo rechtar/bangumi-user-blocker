@@ -234,12 +234,17 @@ function attttack(path, targets, usernames)
 
     }
     
+    // 1. 修正回復間隔。
+    // 2. 只在敵我雙方時間線上自動回復（誤傷就不好了），不屏蔽其他吐槽。
+    // 3. 識辨連續吐槽或短吐槽。
+    // 4. 對白微調。
+    
     // 我也來寫個流氓軟件，電波提醒防禦性自動回復，暫時不擴大戰線只針對時間線上的吐槽。
     if ( path === '/notify' ) {
         
         // 人……人家才不是機器人，機器人才準時回復的呢！那麼就隔一段時間回復一次吧。
-        var min = 10;
-        var max = 60;
+        var min = 60;
+        var max = 240;
         var t = ( min + Math.ceil( Math.random() * ( max - min ) ) ) * 60 * 1000;
         setTimeout(function(){location.reload();},t);
         
@@ -250,11 +255,11 @@ function attttack(path, targets, usernames)
             
             // 我只是一個圖靈機。
             link.each(function(index) {
-                
+
                 var box = $(this).parent().parent().parent();
                 var id = 'turing' + index;
                 var erase = box.find('a.nt_del').attr('href') + '';
-                
+
                 var iframe = $('<iframe />').attr({
                     id: id,
                     width: 0,
@@ -263,34 +268,54 @@ function attttack(path, targets, usernames)
                     src: $(this).attr('href'),
                 });
 
-                box.after(iframe);                                     // 1. 戰爭開始
-                box.html('風……太……大……');                               // 2. 這是一隻猫在鍵盤上亂按
+                box.after(iframe);                                         // 1. 戰爭開始
 
                 iframe.load( function() {
-                    
-                    // 機器人還能聽懂你說話，wu la la la la la wu la~ 。
-                    var inputBox = $('li.reply_item > a.cmt_reply + a.l[href*="/user/' + user + '"]').last().parent().clone();
-                    inputBox.children('span.tip_j').prevAll().remove();
-                    inputBox.children('span.tip_j').remove();
-                    var input = inputBox.text();
 
-                    var form = $('#'+id).contents().find('form[name=new_comment]');
-                    var textarea = form.find('textarea');
-                    var button = form.find('input[type=submit]');
+                    var content = $('#'+id).contents();
+                    console.log(content);
+                    var target = content.find('#main > div.columnsApp.statusSingle.clearit > div.statusHeader.clearit > div > p').text().slice(1); // target timeline user id
+                    var self = content.find('#dock > div > ul > li.first > a').attr('href').split('/').slice(-1)[0]; // self user id
 
-                    form.attr('onsubmit',function() {                  // 5. 回復成功
+                    // 只在自己或對方的時間線攻擊。
+                    if (target === self || target === user ) {
 
-                        $.post(erase,function() {                      // 6. 裝沒看見
-                        
-                            iframe.remove();                           // 7. 毀屍滅跡
-                            box.html('風……太……大……我聽不清楚！');         // 8. 真的是我家猫亂打出來的
-                            
+                        // 機器人還能聽懂你說話，wu la la la la la wu la~ 。
+                        var inputBox = content.find('li.reply_item > a.cmt_reply + a.l[href*="/user/' + user + '"]').last().parent().clone();
+                        inputBox.children('span.tip_j').prevAll().remove();
+                        inputBox.children('span.tip_j').remove();
+                        var input = inputBox.text().replace(/^\s*/,'').replace(/\s*$/,'');
+
+                        var count;
+                        var list = content.find('li.reply_item > a.cmt_reply').text().split('@');
+                        for (var i = list.length - 1; i >= 0; i--) {
+                            if (list[i] !== user) {
+                                count = list.length - 1 - i;
+                                break;
+                            };
+                        };
+
+                        var form = content.find('form[name=new_comment]');
+                        var textarea = form.find('textarea');
+                        var button = form.find('input[type=submit]');
+
+                        // console.log(user+','+input+','+count+','+input.length);
+
+                        form.attr('onsubmit',function() {                  // 4. 回復成功
+
+                            $.post(erase,function() {                     // 5. 裝沒看見
+
+                                iframe.remove();                          // 6. 毀屍滅跡
+                                box.html('風……太……大……我聽不清楚！');       // 7. 真的是我家猫亂打出來的
+
+                            });
+
                         });
-                        
-                    });
-                    
-                    textarea.html(bB.reply(user,input));               // 3. 還是一隻猫在鍵盤上亂按
-                    button.click();                                    // 4. 射臉上去
+
+                        textarea.val(bB.reply(user,input,count));         // 2. 這是一隻猫在鍵盤上亂按
+                        button.click();                                   // 3. 射臉上去
+
+                    };
 
                 });
 
